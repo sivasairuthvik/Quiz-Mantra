@@ -13,7 +13,17 @@ const authenticate = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (jwtError) {
+      console.error('JWT verification error:', jwtError);
+      return res.status(401).json({ 
+        success: false, 
+        message: `Invalid token: ${jwtError.message}` 
+      });
+    }
+
     const user = await User.findById(decoded.id).select('-googleId');
 
     if (!user || !user.isActive) {

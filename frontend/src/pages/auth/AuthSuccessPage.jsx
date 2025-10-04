@@ -10,10 +10,15 @@ const AuthSuccessPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
-    const role = params.get('role');
-    if (token) {
-      // You may want to fetch user info here or decode token
-      login(token, { role });
+    const userStr = params.get('user');
+    let user = null;
+    try {
+      user = userStr ? JSON.parse(decodeURIComponent(userStr)) : null;
+    } catch {
+      user = null;
+    }
+    if (token && user) {
+      login(token, user);
       navigate('/dashboard', { replace: true });
     } else {
       navigate('/login', { replace: true });

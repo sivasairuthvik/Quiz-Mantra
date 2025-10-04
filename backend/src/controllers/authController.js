@@ -23,8 +23,17 @@ const googleCallback = asyncHandler(async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    // Redirect to frontend with token
-    res.redirect(`${process.env.CLIENT_URL}/auth/success?token=${token}&role=${user.role}`);
+    // Send user info as JSON string (encodeURIComponent)
+    const userInfo = encodeURIComponent(JSON.stringify({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      profilePicture: user.profilePicture
+    }));
+
+    // Redirect to frontend with token and user info
+    res.redirect(`${process.env.CLIENT_URL}/auth/success?token=${token}&user=${userInfo}`);
   } catch (error) {
     console.error('Google callback error:', error);
     res.redirect(`${process.env.CLIENT_URL}/auth/error?message=Authentication failed`);

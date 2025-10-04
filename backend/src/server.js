@@ -26,6 +26,14 @@ const practiceRoutes = require('./routes/practice');
 
 const app = express();
 
+
+// Check JWT_SECRET loading
+if (!process.env.JWT_SECRET) {
+  console.warn('WARNING: JWT_SECRET is undefined! Check your .env file and dotenv config.');
+} else {
+  console.log('JWT_SECRET loaded:', process.env.JWT_SECRET.slice(0, 6) + '...');
+}
+
 // Connect to database
 connectDB();
 
