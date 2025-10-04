@@ -1,0 +1,562 @@
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 280px;
+  right: 0;
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  z-index: 900;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar--sidebar-collapsed {
+  left: 80px;
+}
+
+.navbar__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 24px;
+  max-width: 100%;
+}
+
+/* Search Section */
+.navbar__search {
+  flex: 1;
+  max-width: 500px;
+  margin-right: 24px;
+}
+
+.navbar__search-form {
+  width: 100%;
+}
+
+.navbar__search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar__search-icon {
+  position: absolute;
+  left: 12px;
+  color: #64748b;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.navbar__search-input {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.navbar__search-input:focus {
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.navbar__search-input::placeholder {
+  color: #94a3b8;
+}
+
+.navbar__search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.navbar__search-clear:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* Right Section */
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Notifications */
+.navbar__notifications {
+  position: relative;
+}
+
+.navbar__notifications-toggle {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar__notifications-toggle:hover {
+  background: #f1f5f9;
+}
+
+.navbar__notifications-icon {
+  font-size: 20px;
+  color: #475569;
+}
+
+.navbar__notifications-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.navbar__notifications-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  width: 350px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.navbar__notifications-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar__notifications-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.navbar__notifications-count {
+  font-size: 12px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.navbar__notifications-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.navbar__notification-item {
+  display: flex;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navbar__notification-item:hover {
+  background: #f8fafc;
+}
+
+.navbar__notification-item--unread {
+  background: #f0f9ff;
+}
+
+.navbar__notification-item--unread:hover {
+  background: #e0f2fe;
+}
+
+.navbar__notification-type {
+  margin-right: 12px;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+
+.navbar__notification-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.navbar__notification-type--info .navbar__notification-dot {
+  background: #3b82f6;
+}
+
+.navbar__notification-type--success .navbar__notification-dot {
+  background: #10b981;
+}
+
+.navbar__notification-type--warning .navbar__notification-dot {
+  background: #f59e0b;
+}
+
+.navbar__notification-type--error .navbar__notification-dot {
+  background: #ef4444;
+}
+
+.navbar__notification-content {
+  flex: 1;
+}
+
+.navbar__notification-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.navbar__notification-message {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+}
+
+.navbar__notification-time {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.navbar__notifications-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.navbar__notifications-footer {
+  padding: 12px 20px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.navbar__notifications-view-all {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.navbar__notifications-view-all:hover {
+  color: #5a67d8;
+}
+
+/* Profile */
+.navbar__profile {
+  position: relative;
+}
+
+.navbar__profile-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar__profile-toggle:hover {
+  background: #f1f5f9;
+}
+
+.navbar__profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.navbar__profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.navbar__profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.navbar__profile-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.navbar__profile-role {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: capitalize;
+}
+
+.navbar__profile-chevron {
+  font-size: 12px;
+  color: #94a3b8;
+  transition: transform 0.2s ease;
+}
+
+.navbar__profile-toggle[aria-expanded="true"] .navbar__profile-chevron {
+  transform: rotate(180deg);
+}
+
+.navbar__profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.navbar__profile-dropdown-header {
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar__profile-dropdown-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.navbar__profile-dropdown-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.navbar__profile-dropdown-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.navbar__profile-dropdown-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar__profile-dropdown-info p {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar__profile-dropdown-role {
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.navbar__profile-dropdown-menu {
+  padding: 8px 0;
+}
+
+.navbar__profile-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #475569;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.navbar__profile-dropdown-item:hover {
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.navbar__profile-dropdown-item--logout {
+  color: #dc2626;
+}
+
+.navbar__profile-dropdown-item--logout:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.navbar__profile-dropdown-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.navbar__profile-dropdown-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 8px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    left: 0;
+    padding: 0 16px;
+  }
+  
+  .navbar__container {
+    padding: 0 16px;
+  }
+  
+  .navbar__search {
+    margin-right: 16px;
+  }
+  
+  .navbar__profile-info {
+    display: none;
+  }
+  
+  .navbar__notifications-dropdown,
+  .navbar__profile-dropdown {
+    width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar__search {
+    margin-right: 12px;
+  }
+  
+  .navbar__search-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .navbar__notifications-dropdown,
+  .navbar__profile-dropdown {
+    width: calc(100vw - 32px);
+    right: 16px;
+  }
+  
+  .navbar__right {
+    gap: 8px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .navbar__search-input,
+  .navbar__notifications-toggle,
+  .navbar__profile-toggle,
+  .navbar__profile-chevron {
+    transition: none;
+  }
+}
+
+/* Focus styles */
+.navbar__search-input:focus,
+.navbar__notifications-toggle:focus,
+.navbar__profile-toggle:focus,
+.navbar__profile-dropdown-item:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Scrollbar styles for dropdowns */
+.navbar__notifications-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navbar__notifications-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.navbar__notifications-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.navbar__notifications-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

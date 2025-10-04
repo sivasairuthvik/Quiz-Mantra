@@ -1,0 +1,624 @@
+/* CreateQuizPage.module.css */
+
+.createQuizPage {
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xl);
+  gap: var(--spacing-lg);
+}
+
+.headerContent h1 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--gray-900);
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--gray-600);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Step Indicator */
+.stepIndicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+  padding: 0 var(--spacing-lg);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 200px;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: -50%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--gray-200);
+  z-index: 1;
+}
+
+.step.active:not(:last-child)::after {
+  background-color: var(--primary-500);
+}
+
+.stepNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--gray-200);
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.step.active .stepNumber {
+  background-color: var(--primary-500);
+  color: white;
+}
+
+.stepLabel {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  text-align: center;
+  font-weight: 500;
+}
+
+.step.active .stepLabel {
+  color: var(--primary-600);
+  font-weight: 600;
+}
+
+/* Step Content */
+.stepContent {
+  margin-bottom: var(--spacing-xl);
+}
+
+.stepCard {
+  margin-bottom: var(--spacing-lg);
+}
+
+.stepCard h2 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--gray-900);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Form Styles */
+.formGroup {
+  margin-bottom: var(--spacing-lg);
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.select {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  background-color: white;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-500);
+}
+
+/* Questions Section */
+.questionsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.emptyQuestions {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--gray-500);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--gray-300);
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.questionCard {
+  border-left: 4px solid var(--primary-500);
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.questionMeta {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.questionNumber {
+  font-weight: 700;
+  color: var(--primary-600);
+  font-size: 1rem;
+}
+
+.questionType {
+  background-color: var(--gray-100);
+  color: var(--gray-700);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.questionPoints {
+  background-color: var(--primary-100);
+  color: var(--primary-700);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.questionActions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.questionContent {
+  margin-top: var(--spacing-md);
+}
+
+.questionText {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--gray-800);
+  line-height: 1.5;
+}
+
+.questionOptions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.option {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option.correct {
+  background-color: var(--success-500);
+  color: white;
+  border-color: var(--success-500);
+  font-weight: 500;
+}
+
+.correctMark {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.trueFalseOptions {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.trueFalseOptions span {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+}
+
+.trueFalseOptions span.correct {
+  background-color: var(--success-500);
+  color: white;
+  border-color: var(--success-500);
+  font-weight: 500;
+}
+
+.questionExplanation {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--primary-50);
+  border-left: 4px solid var(--primary-500);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+}
+
+/* Question Modal */
+.questionForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.optionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.optionsSection label {
+  font-weight: 500;
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-sm);
+}
+
+.optionInput {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.optionInput input[type="text"] {
+  flex: 1;
+}
+
+.correctOption {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.correctOption input[type="radio"] {
+  accent-color: var(--success-500);
+}
+
+.trueFalseSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.trueFalseSection label {
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  cursor: pointer;
+}
+
+.radioLabel input[type="radio"] {
+  accent-color: var(--primary-500);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--gray-200);
+}
+
+/* Settings Step */
+.settingsStep {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.previewSummary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.summaryItem {
+  padding: var(--spacing-md);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+}
+
+.summaryItem strong {
+  color: var(--gray-700);
+  margin-right: var(--spacing-sm);
+}
+
+/* Step Navigation */
+.stepNavigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.stepInfo {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-600);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .createQuizPage {
+    padding: var(--spacing-md);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .headerContent h1 {
+    font-size: 1.875rem;
+  }
+
+  .headerActions {
+    justify-content: flex-end;
+  }
+
+  .stepIndicator {
+    padding: 0;
+  }
+
+  .step {
+    max-width: none;
+  }
+
+  .step:not(:last-child)::after {
+    display: none;
+  }
+
+  .stepNumber {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .stepLabel {
+    font-size: 0.75rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .questionHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .questionMeta {
+    justify-content: center;
+  }
+
+  .questionActions {
+    justify-content: center;
+  }
+
+  .optionInput {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .previewSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .stepNavigation {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .createQuizPage {
+    padding: var(--spacing-sm);
+  }
+
+  .headerContent h1 {
+    font-size: 1.5rem;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .questionsHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .questionMeta {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .trueFalseOptions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Loading States */
+.stepCard.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Focus Styles */
+.stepCard:focus-within {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+.questionCard:focus-within {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* Animation */
+.stepContent {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .headerActions,
+  .stepIndicator,
+  .stepNavigation,
+  .questionActions {
+    display: none;
+  }
+
+  .createQuizPage {
+    padding: 0;
+    max-width: none;
+  }
+}
