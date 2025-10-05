@@ -1,0 +1,12 @@
+.pnav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background: rgba(7,11,20,0.6); border-bottom: 1px solid rgba(148,163,184,.15); }
+.pnav__container { max-width: 1200px; margin: 0 auto; padding: .75rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+.pnav__logo { font-weight: 800; color: #ffffff; text-decoration: none; letter-spacing: .2px; }
+.pnav__nav { display: none; gap: 1rem; }
+.pnav__link { color: #e2e8f0; text-decoration: none; font-size: .95rem; }
+.pnav__link:hover { color: #ffffff; }
+.pnav__actions { display: flex; gap: .5rem; }
+.pnav__btn { text-decoration: none; border-radius: 10px; padding: .5rem .85rem; font-weight: 600; }
+.pnav__btn--primary { background: linear-gradient(90deg, #60a5fa, #a78bfa); color: #0b1220; }
+.pnav__btn--ghost { color: #e2e8f0; border: 1px solid rgba(148,163,184,.25); }
+
+@media (min-width: 768px) { .pnav__nav { display: flex; } }

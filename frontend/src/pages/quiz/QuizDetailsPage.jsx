@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Card } from '../../components/common/Card';
-import { Button } from '../../components/common/Button';
-import { Loading } from '../../components/common/Loading';
-import { Modal } from '../../components/common/Modal';
-import { useAuth } from '../../contexts/AuthContext';
-import { useQuiz } from '../../contexts/QuizContext';
+import { Card, Button, Loading, Modal } from '../../components/common';
+import { useAuth } from '../../context/AuthContext';
+import { useQuiz } from '../../context/QuizContext';
 import { toast } from 'react-hot-toast';
 import styles from './QuizDetailsPage.module.css';
 
@@ -13,12 +10,13 @@ export default function QuizDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { 
-    getQuiz, 
-    deleteQuiz, 
-    updateQuizStatus,
-    getQuizStatistics,
-    loading 
+
+  // useQuiz provides these methods/state
+  const {
+    fetchQuizById,
+    deleteQuiz,
+    updateQuiz,
+    isLoading,
   } = useQuiz();
 
   const [quiz, setQuiz] = useState(null);
@@ -31,17 +29,17 @@ export default function QuizDetailsPage() {
     if (id) {
       loadQuizData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const loadQuizData = async () => {
     try {
-      const quizData = await getQuiz(id);
-      setQuiz(quizData);
-      
-      // Load statistics if user is teacher or admin
-      if (user.role === 'teacher' || user.role === 'admin') {
-        const stats = await getQuizStatistics(id);
-        setStatistics(stats);
+      const result = await fetchQuizById(id);
+      if (result?.success) {
+        setQuiz(result.data);
+        setStatistics(result.data?.statistics || null);
+      } else {
+        throw new Error(result?.error || 'Failed to load quiz');
       }
     } catch (error) {
       toast.error('Failed to load quiz details');
@@ -51,9 +49,13 @@ export default function QuizDetailsPage() {
 
   const handleDeleteQuiz = async () => {
     try {
-      await deleteQuiz(id);
-      toast.success('Quiz deleted successfully');
-      navigate('/quizzes');
+      const res = await deleteQuiz(id);
+      if (res?.success) {
+        toast.success('Quiz deleted successfully');
+        navigate('/quizzes');
+      } else {
+        throw new Error(res?.error || 'Delete failed');
+      }
     } catch (error) {
       toast.error('Failed to delete quiz');
     }
@@ -61,16 +63,21 @@ export default function QuizDetailsPage() {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      await updateQuizStatus(id, newStatus);
-      setQuiz(prev => ({ ...prev, status: newStatus }));
-      setShowStatusModal(false);
-      toast.success(`Quiz ${newStatus} successfully`);
+      const res = await updateQuiz(id, { status: newStatus });
+      if (res?.success) {
+        setQuiz(prev => ({ ...prev, status: newStatus }));
+        setShowStatusModal(false);
+        toast.success(`Quiz ${newStatus} successfully`);
+      } else {
+        throw new Error(res?.error || 'Update failed');
+      }
     } catch (error) {
       toast.error('Failed to update quiz status');
     }
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -98,12 +105,11 @@ export default function QuizDetailsPage() {
     }
   };
 
-  const canTakeQuiz = () => {
-    return user.role === 'student' && quiz.status === 'published';
-  };
+  const canTakeQuiz = () => user.role === 'student' && quiz?.status === 'published';
 
   const canEditQuiz = () => {
-    return (user.role === 'teacher' && quiz.created_by === user.id) || user.role === 'admin';
+    const createdById = quiz?.created_by || quiz?.createdBy?._id || quiz?.createdBy || quiz?.createdById;
+    return (user.role === 'teacher' && createdById === user.id) || user.role === 'admin';
   };
 
   const renderOverviewTab = () => (
@@ -113,54 +119,54 @@ export default function QuizDetailsPage() {
         <div className={styles.infoGrid}>
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Status:</span>
-            <span 
+            <span
               className={styles.statusBadge}
               style={{ backgroundColor: getStatusColor(quiz.status) }}
             >
               {quiz.status}
             </span>
           </div>
-          
+
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Difficulty:</span>
-            <span 
+            <span
               className={styles.difficultyBadge}
-              style={{ color: getDifficultyColor(quiz.difficulty) }}
+              style={{ color: getDifficultyColor(quiz.difficulty || quiz.metadata?.difficulty) }}
             >
-              {quiz.difficulty}
+              {quiz.difficulty || quiz.metadata?.difficulty || 'medium'}
             </span>
           </div>
-          
+
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Questions:</span>
             <span className={styles.infoValue}>{quiz.questions?.length || 0}</span>
           </div>
-          
+
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Time Limit:</span>
-            <span className={styles.infoValue}>{quiz.time_limit} minutes</span>
+            <span className={styles.infoValue}>{quiz.settings?.timeLimit ?? 60} minutes</span>
           </div>
-          
+
           <div className={styles.infoItem}>
-            <span className={styles.infoLabel}>Attempts Allowed:</span>
-            <span className={styles.infoValue}>{quiz.attempts_allowed}</span>
+            <span className={styles.infoLabel}>Attempts:</span>
+            <span className={styles.infoValue}>{quiz.settings?.allowRetake ? 'Multiple' : 'Single'}</span>
           </div>
-          
+
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Total Points:</span>
             <span className={styles.infoValue}>
-              {quiz.questions?.reduce((sum, q) => sum + (q.points || 1), 0) || 0}
+              {quiz.metadata?.totalPoints ?? (quiz.questions?.reduce((sum, q) => sum + (q.points || 1), 0) || 0)}
             </span>
           </div>
-          
+
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Created:</span>
-            <span className={styles.infoValue}>{formatDate(quiz.created_at)}</span>
+            <span className={styles.infoValue}>{formatDate(quiz.created_at || quiz.createdAt)}</span>
           </div>
-          
+
           <div className={styles.infoItem}>
             <span className={styles.infoLabel}>Updated:</span>
-            <span className={styles.infoValue}>{formatDate(quiz.updated_at)}</span>
+            <span className={styles.infoValue}>{formatDate(quiz.updated_at || quiz.updatedAt)}</span>
           </div>
         </div>
       </Card>
@@ -171,21 +177,21 @@ export default function QuizDetailsPage() {
           <div className={styles.settingItem}>
             <span className={styles.settingIcon}>👁️</span>
             <span className={styles.settingText}>
-              {quiz.show_results ? 'Show results after completion' : 'Hide results from students'}
+              {quiz.settings?.showResults ? 'Show results after completion' : 'Hide results from students'}
             </span>
           </div>
-          
+
           <div className={styles.settingItem}>
             <span className={styles.settingIcon}>🔀</span>
             <span className={styles.settingText}>
-              {quiz.randomize_questions ? 'Questions are randomized' : 'Questions in fixed order'}
+              {quiz.settings?.shuffleQuestions ? 'Questions are randomized' : 'Questions in fixed order'}
             </span>
           </div>
-          
+
           <div className={styles.settingItem}>
             <span className={styles.settingIcon}>⏭️</span>
             <span className={styles.settingText}>
-              {quiz.require_sequential ? 'Sequential answering required' : 'Questions can be skipped'}
+              {quiz.settings?.allowRetake ? 'Retakes allowed' : 'Single attempt'}
             </span>
           </div>
         </div>
@@ -196,22 +202,17 @@ export default function QuizDetailsPage() {
           <h3>Quiz Statistics</h3>
           <div className={styles.statsGrid}>
             <div className={styles.statItem}>
-              <div className={styles.statValue}>{statistics.total_attempts || 0}</div>
+              <div className={styles.statValue}>{statistics.totalAttempts || 0}</div>
               <div className={styles.statLabel}>Total Attempts</div>
             </div>
-            
+
             <div className={styles.statItem}>
-              <div className={styles.statValue}>{statistics.unique_students || 0}</div>
-              <div className={styles.statLabel}>Unique Students</div>
-            </div>
-            
-            <div className={styles.statItem}>
-              <div className={styles.statValue}>{statistics.average_score?.toFixed(1) || 0}%</div>
+              <div className={styles.statValue}>{(statistics.averageScore ?? 0).toFixed(1)}%</div>
               <div className={styles.statLabel}>Average Score</div>
             </div>
-            
+
             <div className={styles.statItem}>
-              <div className={styles.statValue}>{statistics.completion_rate?.toFixed(1) || 0}%</div>
+              <div className={styles.statValue}>{(statistics.completionRate ?? 0).toFixed(1)}%</div>
               <div className={styles.statLabel}>Completion Rate</div>
             </div>
           </div>
@@ -229,7 +230,7 @@ export default function QuizDetailsPage() {
           {canEditQuiz() && (
             <Button
               variant="primary"
-              onClick={() => navigate(`/quizzes/${id}/edit`)}
+              onClick={() => navigate(`/quiz/${id}/edit`)}
             >
               Add Questions
             </Button>
@@ -238,49 +239,49 @@ export default function QuizDetailsPage() {
       ) : (
         <div className={styles.questionsList}>
           {quiz.questions?.map((question, index) => (
-            <Card key={question.id || index} className={styles.questionCard}>
+            <Card key={question._id || index} className={styles.questionCard}>
               <div className={styles.questionHeader}>
                 <div className={styles.questionMeta}>
                   <span className={styles.questionNumber}>Q{index + 1}</span>
                   <span className={styles.questionType}>
-                    {question.type.replace('_', ' ')}
+                    {(question.type || '').replace('-', ' ')}
                   </span>
                   <span className={styles.questionPoints}>{question.points || 1} pts</span>
                 </div>
               </div>
-              
+
               <div className={styles.questionContent}>
-                <p className={styles.questionText}>{question.question_text}</p>
-                
-                {question.type === 'multiple_choice' && (
+                <p className={styles.questionText}>{question.question || question.question_text}</p>
+
+                {question.type === 'multiple-choice' && (
                   <div className={styles.questionOptions}>
-                    {question.options?.filter(opt => opt.trim()).map((option, optIndex) => (
-                      <div 
-                        key={optIndex}
-                        className={`${styles.option} ${option === question.correct_answer ? styles.correct : ''}`}
+                    {question.options?.map((opt, optIndex) => (
+                      <div
+                        key={opt._id || optIndex}
+                        className={`${styles.option} ${opt.isCorrect ? styles.correct : ''}`}
                       >
-                        {String.fromCharCode(65 + optIndex)}. {option}
-                        {option === question.correct_answer && <span className={styles.correctMark}>✓</span>}
+                        {String.fromCharCode(65 + optIndex)}. {opt.text}
+                        {opt.isCorrect && <span className={styles.correctMark}>✓</span>}
                       </div>
                     ))}
                   </div>
                 )}
 
-                {question.type === 'true_false' && (
+                {question.type === 'true-false' && (
                   <div className={styles.trueFalseOptions}>
-                    <span className={question.correct_answer === 'true' ? styles.correct : ''}>
-                      True {question.correct_answer === 'true' && '✓'}
+                    <span className={question.correctAnswer?.toLowerCase() === 'true' ? styles.correct : ''}>
+                      True {question.correctAnswer?.toLowerCase() === 'true' && '✓'}
                     </span>
-                    <span className={question.correct_answer === 'false' ? styles.correct : ''}>
-                      False {question.correct_answer === 'false' && '✓'}
+                    <span className={question.correctAnswer?.toLowerCase() === 'false' ? styles.correct : ''}>
+                      False {question.correctAnswer?.toLowerCase() === 'false' && '✓'}
                     </span>
                   </div>
                 )}
 
-                {(question.type === 'short_answer' || question.type === 'essay') && (
+                {(question.type === 'short-answer' || question.type === 'essay') && (
                   <div className={styles.sampleAnswer}>
                     <strong>Sample Answer:</strong>
-                    <p>{question.correct_answer || 'No sample answer provided'}</p>
+                    <p>{question.correctAnswer || 'No sample answer provided'}</p>
                   </div>
                 )}
 
@@ -309,7 +310,7 @@ export default function QuizDetailsPage() {
             View All Submissions
           </Button>
         </div>
-        
+
         <div className={styles.submissionsPreview}>
           <p>Submission details will be shown here...</p>
           <Button
@@ -323,7 +324,7 @@ export default function QuizDetailsPage() {
     </div>
   );
 
-  if (loading || !quiz) {
+  if (isLoading || !quiz) {
     return <Loading />;
   }
 
@@ -337,16 +338,16 @@ export default function QuizDetailsPage() {
             <span className={styles.breadcrumbSeparator}>→</span>
             <span>{quiz.title}</span>
           </div>
-          
+
           <h1>{quiz.title}</h1>
           <p className={styles.description}>{quiz.description}</p>
-          
+
           <div className={styles.headerMeta}>
             <span className={styles.createdBy}>
-              By {quiz.created_by_name || 'Unknown'}
+              By {quiz.createdBy?.name || quiz.created_by_name || 'Unknown'}
             </span>
             <span className={styles.createdDate}>
-              Created {formatDate(quiz.created_at)}
+              Created {formatDate(quiz.created_at || quiz.createdAt)}
             </span>
           </div>
         </div>
@@ -370,14 +371,14 @@ export default function QuizDetailsPage() {
               >
                 Edit Quiz
               </Button>
-              
+
               <Button
                 variant="outline"
                 onClick={() => setShowStatusModal(true)}
               >
                 Change Status
               </Button>
-              
+
               <Button
                 variant="danger"
                 onClick={() => setShowDeleteModal(true)}
@@ -406,14 +407,14 @@ export default function QuizDetailsPage() {
         >
           Overview
         </button>
-        
+
         <button
           className={`${styles.tab} ${activeTab === 'questions' ? styles.active : ''}`}
           onClick={() => setActiveTab('questions')}
         >
           Questions ({quiz.questions?.length || 0})
         </button>
-        
+
         {(user.role === 'teacher' || user.role === 'admin') && (
           <button
             className={`${styles.tab} ${activeTab === 'submissions' ? styles.active : ''}`}
@@ -439,7 +440,7 @@ export default function QuizDetailsPage() {
         type="danger"
       >
         <p>
-          Are you sure you want to delete "{quiz.title}"? 
+          Are you sure you want to delete "{quiz.title}"?
           This action cannot be undone and will remove all associated submissions.
         </p>
         <div className={styles.modalActions}>
@@ -489,18 +490,6 @@ export default function QuizDetailsPage() {
           </Button>
         </div>
       </Modal>
-    </div>
-  );
-}om 'react';
-import { Card } from '../../components/common';
-
-const QuizDetailsPage = () => {
-  return (
-    <div className="quiz-details-page">
-      <h1>Quiz Details</h1>
-      <Card>
-        <p>Quiz details functionality will be implemented here.</p>
-      </Card>
     </div>
   );
 }

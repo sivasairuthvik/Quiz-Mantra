@@ -32,6 +32,13 @@ const Button = ({
     onClick?.(e);
   };
 
+  // Runtime guard: throw error if icon is a plain object (not string/number/element)
+  if (icon && typeof icon === 'object' && !React.isValidElement(icon)) {
+    throw new Error(
+      'Button icon prop must be a string, number, or valid React element. You passed an object: ' + JSON.stringify(icon)
+    );
+  }
+
   return (
     <button
       className={buttonClasses}
@@ -41,15 +48,16 @@ const Button = ({
       {...props}
     >
       {loading && <span className="btn__spinner"></span>}
-      
       {icon && iconPosition === 'left' && !loading && (
-        <span className="btn__icon btn__icon--left">{icon}</span>
+        <span className="btn__icon btn__icon--left">
+          {typeof icon === 'string' || typeof icon === 'number' ? icon : React.isValidElement(icon) ? icon : null}
+        </span>
       )}
-      
       <span className="btn__text">{children}</span>
-      
       {icon && iconPosition === 'right' && !loading && (
-        <span className="btn__icon btn__icon--right">{icon}</span>
+        <span className="btn__icon btn__icon--right">
+          {typeof icon === 'string' || typeof icon === 'number' ? icon : React.isValidElement(icon) ? icon : null}
+        </span>
       )}
     </button>
   );

@@ -23,6 +23,7 @@ const messageRoutes = require('./routes/messages');
 const announcementRoutes = require('./routes/announcements');
 const competitionRoutes = require('./routes/competitions');
 const practiceRoutes = require('./routes/practice');
+const publicRoutes = require('./routes/public');
 
 const app = express();
 
@@ -114,6 +115,7 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
+app.use('/api/auth', authRoutes);
 app.use('/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/submissions', submissionRoutes);
@@ -122,6 +124,7 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/competitions', competitionRoutes);
 app.use('/api/practice', practiceRoutes);
+app.use('/api/public', publicRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

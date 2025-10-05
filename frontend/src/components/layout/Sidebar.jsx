@@ -32,7 +32,7 @@ const Sidebar = () => {
   const getNavigationItems = () => {
     const commonItems = [
       {
-        id: 'dashboard',
+          id: 'dashboard-main',
         name: 'Dashboard',
         path: '/dashboard',
         icon: icons.dashboard,
@@ -131,6 +131,13 @@ const Sidebar = () => {
     ];
 
     const adminItems = [
+      {
+        id: 'dashboard-admin',
+        name: 'Dashboard',
+        path: '/admin/dashboard',
+        icon: icons.dashboard,
+        roles: ['admin']
+      },
       {
         id: 'all-quizzes',
         name: 'All Quizzes',

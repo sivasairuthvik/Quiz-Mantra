@@ -1,0 +1,35 @@
+.admin-login-page {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  text-align: center;
+}
+.admin-login-page h2 {
+  color: #2563eb;
+  margin-bottom: 1rem;
+}
+.admin-login-page p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+.google-login-btn {
+  background: #4285f4;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.google-login-btn:hover {
+  background: #174ea6;
+}
+.error-msg {
+  color: #e74c3c;
+  margin-top: 1.5rem;
+  font-weight: 500;
+}

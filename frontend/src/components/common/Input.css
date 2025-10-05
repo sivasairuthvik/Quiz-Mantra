@@ -6,10 +6,11 @@
   width: 100%;
 }
 
+
 .input__label {
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: #f3f4f6;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -26,12 +27,13 @@
   align-items: center;
 }
 
+
 .input__field {
   width: 100%;
-  border: 1px solid #d1d5db;
+  border: 1px solid #333;
   border-radius: 8px;
-  background: #ffffff;
-  color: #1f2937;
+  background: #23232a;
+  color: #f3f4f6;
   transition: all 0.2s ease;
   font-family: inherit;
   font-size: 14px;

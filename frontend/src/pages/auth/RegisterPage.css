@@ -1,0 +1,6 @@
+.register-page { min-height: 100vh; display: grid; place-items: center; padding: 2rem; background: linear-gradient(120deg, #f0f9ff 0%, #ecfeff 100%); }
+.register-page__container { width: 100%; max-width: 480px; }
+.register-card { padding: 1.5rem; }
+.register-card__header { text-align: center; margin-bottom: 1rem; }
+.register-card__content { margin: 1rem 0; }
+.register-card__footer { text-align: center; color: #6b7280; }

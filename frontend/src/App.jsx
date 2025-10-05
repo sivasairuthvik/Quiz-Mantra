@@ -4,11 +4,14 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { QuizProvider } from './context/QuizContext';
 import { Layout } from './components/layout';
-import { PageLoading } from './components/common';
+import Loading from './components/common/Loading';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 // Lazy load pages for better performance
 const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
+const AdminLoginPage = React.lazy(() => import('./pages/admin/AdminLoginPage'));
+const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
+const HomePage = React.lazy(() => import('./pages/home/HomePage'));
 const DashboardPage = React.lazy(() => import('./pages/dashboard/DashboardPage'));
 const ProfilePage = React.lazy(() => import('./pages/profile/ProfilePage'));
 const QuizzesPage = React.lazy(() => import('./pages/quiz/QuizzesPage'));
@@ -22,12 +25,13 @@ const CompetitionsPage = React.lazy(() => import('./pages/competition/Competitio
 const AnnouncementsPage = React.lazy(() => import('./pages/announcement/AnnouncementsPage'));
 const MessagesPage = React.lazy(() => import('./pages/message/MessagesPage'));
 const AdminUsersPage = React.lazy(() => import('./pages/admin/AdminUsersPage'));
+const AdminDashboardPage = React.lazy(() => import('./pages/admin/AdminDashboardPage'));
 const AdminAnalyticsPage = React.lazy(() => import('./pages/admin/AdminAnalyticsPage'));
 const AdminSettingsPage = React.lazy(() => import('./pages/admin/AdminSettingsPage'));
 const NotFoundPage = React.lazy(() => import('./pages/error/NotFoundPage'));
 
 // Loading fallback component
-const SuspenseFallback = () => <PageLoading text="Loading page..." />;
+const SuspenseFallback = () => <Loading text="Loading page..." fullScreen />;
 
 function App() {
   // ...existing code...
@@ -63,24 +67,29 @@ function App() {
             <React.Suspense fallback={<SuspenseFallback />}>
               <Routes>
                 {/* Public routes */}
+                <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/admin" element={<AdminLoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
                 <Route path="/auth/success" element={<AuthSuccessPage />} />
                 {/* Protected routes wrapped in Layout */}
                 <Route path="/" element={<Layout />}>
-                  <Route index element={<Navigate to="/dashboard" replace />} />
+                  {/* default inside layout is dashboard for authenticated navigation paths */}
+                  <Route path="home" element={<Navigate to="/" replace />} />
                   <Route path="dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                   <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="quizzes" element={<ProtectedRoute><QuizzesPage /></ProtectedRoute>} />
-                  <Route path="quiz/:id" element={<ProtectedRoute><QuizDetailsPage /></ProtectedRoute>} />
-                  <Route path="quiz/create" element={<ProtectedRoute allowedRoles={["teacher", "admin"]}><CreateQuizPage /></ProtectedRoute>} />
-                  <Route path="quiz/:id/edit" element={<ProtectedRoute allowedRoles={["teacher", "admin"]}><CreateQuizPage /></ProtectedRoute>} />
-                  <Route path="quiz/:id/take" element={<ProtectedRoute allowedRoles={["student"]}><TakeQuizPage /></ProtectedRoute>} />
+                  <Route path="quizzes/create" element={<ProtectedRoute allowedRoles={["teacher", "admin"]}><CreateQuizPage /></ProtectedRoute>} />
+                  <Route path="quizzes/:id" element={<ProtectedRoute><QuizDetailsPage /></ProtectedRoute>} />
+                  <Route path="quizzes/:id/edit" element={<ProtectedRoute allowedRoles={["teacher", "admin"]}><CreateQuizPage /></ProtectedRoute>} />
+                  <Route path="quizzes/:id/take" element={<ProtectedRoute allowedRoles={["student"]}><TakeQuizPage /></ProtectedRoute>} />
                   <Route path="submissions" element={<ProtectedRoute><SubmissionsPage /></ProtectedRoute>} />
                   <Route path="submission/:id" element={<ProtectedRoute><SubmissionDetailsPage /></ProtectedRoute>} />
                   <Route path="analytics" element={<ProtectedRoute allowedRoles={["teacher", "admin"]}><AnalyticsPage /></ProtectedRoute>} />
                   <Route path="competitions" element={<ProtectedRoute><CompetitionsPage /></ProtectedRoute>} />
                   <Route path="announcements" element={<ProtectedRoute allowedRoles={["teacher", "admin"]}><AnnouncementsPage /></ProtectedRoute>} />
                   <Route path="messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+                  <Route path="admin/dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboardPage /></ProtectedRoute>} />
                   <Route path="admin/users" element={<ProtectedRoute allowedRoles={["admin"]}><AdminUsersPage /></ProtectedRoute>} />
                   <Route path="admin/analytics" element={<ProtectedRoute allowedRoles={["admin"]}><AdminAnalyticsPage /></ProtectedRoute>} />
                   <Route path="admin/quizzes" element={<ProtectedRoute allowedRoles={["admin"]}><QuizzesPage /></ProtectedRoute>} />

@@ -6,13 +6,15 @@
   gap: 12px;
 }
 
+
 .loading--fullscreen {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(17, 24, 39, 0.95);
+  color: #f3f4f6;
   z-index: 9999;
   flex-direction: column;
   gap: 16px;

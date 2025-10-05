@@ -49,6 +49,11 @@ const userSchema = new mongoose.Schema({
     bio: { type: String, trim: true, maxlength: 500 },
     location: { type: String, trim: true },
   },
+  mobileNumber: {
+    type: String,
+    trim: true,
+    default: '',
+  },
   stats: {
     totalQuizzes: { type: Number, default: 0 },
     averageScore: { type: Number, default: 0 },

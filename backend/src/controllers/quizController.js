@@ -41,14 +41,23 @@ const getQuizzes = asyncHandler(async (req, res) => {
   if (status) query.status = status;
   if (createdBy) query.createdBy = createdBy;
 
-  const quizzes = await Quiz.find(query)
+  let quizzes = await Quiz.find(query)
     .populate('createdBy', 'name email')
     .populate('assignedTo', 'name email')
     .sort({ createdAt: -1 })
     .skip(startIndex)
     .limit(limit);
 
-  const total = await Quiz.countDocuments(query);
+  // Filter out quizzes with missing required fields or invalid questions
+  quizzes = quizzes.filter(q => {
+    if (!q.title || !q.subject || !Array.isArray(q.questions)) return false;
+    for (const question of q.questions) {
+      if (!question.question || typeof question.question !== 'string' || !question.question.trim()) return false;
+    }
+    return true;
+  });
+
+  const total = quizzes.length;
 
   const pagination = {
     page,
@@ -68,6 +77,14 @@ const getQuizzes = asyncHandler(async (req, res) => {
 // @route   GET /api/quiz/:id
 // @access  Private
 const getQuiz = asyncHandler(async (req, res) => {
+  // Validate ObjectId
+  if (!req.params.id || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid quiz id',
+    });
+  }
+
   const quiz = await Quiz.findById(req.params.id)
     .populate('createdBy', 'name email profilePicture')
     .populate('assignedTo', 'name email');

@@ -1,4 +1,5 @@
 /* Button Styles */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -9,7 +10,9 @@
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  border: 1px solid transparent;
+  border: 1px solid #333;
+  background: #23232a;
+  color: #f3f4f6;
   cursor: pointer;
   transition: all 0.2s ease;
   line-height: 1.4;
@@ -63,16 +66,19 @@
 }
 
 /* Variant styles */
+
 .btn--primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-color: transparent;
+  background: linear-gradient(135deg, #23232a 0%, #6366f1 100%);
+  color: #f3f4f6;
+  border-color: #6366f1;
 }
 
+
 .btn--primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  background: linear-gradient(135deg, #18181b 0%, #6366f1 100%);
+  color: #fff;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 .btn--secondary {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { storage } from './helpers';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -13,8 +14,14 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    // Read token via storage to avoid JSON string quotes
+    let token = storage.get('token');
+    // Fallback: handle raw localStorage string
+    if (!token) {
+      const raw = localStorage.getItem('token');
+      try { token = raw ? JSON.parse(raw) : null; } catch { token = raw; }
+    }
+    if (typeof token === 'string' && token.trim()) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -137,6 +144,11 @@ export const competitionsAPI = {
   submitCompetitionEntry: (id, submissionId) => api.post(`/api/competitions/${id}/submit`, { submissionId }),
   getLeaderboard: (id) => api.get(`/api/competitions/${id}/leaderboard`),
   getCompetitionStats: () => api.get('/api/competitions/stats'),
+};
+
+// Public API calls
+export const publicAPI = {
+  contact: (payload) => api.post('/api/public/contact', payload),
 };
 
 export default api;

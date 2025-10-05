@@ -65,6 +65,7 @@ const updateProfile = asyncHandler(async (req, res) => {
     'preferences.subjects': req.body.preferences?.subjects,
     'preferences.difficulty': req.body.preferences?.difficulty,
     'preferences.notifications': req.body.preferences?.notifications,
+    mobileNumber: req.body.mobileNumber,
   };
 
   // Remove undefined fields

@@ -1,8 +1,10 @@
 /* Card Styles */
+
 .card {
-  background: white;
+  background: #23232a;
+  color: #f3f4f6;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #333;
   transition: all 0.2s ease;
   display: block;
   width: 100%;
@@ -46,16 +48,19 @@
 }
 
 /* Interactive states */
+
 .card--hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+  border-color: #6366f1;
+  background: #18181b;
 }
+
 
 .card--clickable {
   cursor: pointer;
-  border: none;
-  background: white;
+  border: 1px solid #6366f1;
+  background: #23232a;
 }
 
 .card--clickable:focus {
@@ -77,17 +82,19 @@
   min-width: 0;
 }
 
+
 .card__title {
   font-size: 18px;
   font-weight: 600;
-  color: #1e293b;
+  color: #f3f4f6;
   margin: 0 0 4px 0;
   line-height: 1.4;
 }
 
+
 .card__subtitle {
   font-size: 14px;
-  color: #64748b;
+  color: #e0e0e0;
   margin: 0;
   line-height: 1.4;
 }
@@ -100,10 +107,11 @@
   flex: 1;
 }
 
+
 .card__footer {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #333;
 }
 
 /* Stats Card */

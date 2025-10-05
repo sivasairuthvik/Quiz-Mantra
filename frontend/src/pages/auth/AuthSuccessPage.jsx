@@ -19,7 +19,11 @@ const AuthSuccessPage = () => {
     }
     if (token && user) {
       login(token, user);
-      navigate('/dashboard', { replace: true });
+      if (user.role === 'admin') {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
     } else {
       navigate('/login', { replace: true });
     }

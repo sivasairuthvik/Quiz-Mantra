@@ -208,13 +208,15 @@ export const QuizProvider = ({ children }) => {
       console.error('Fetch quizzes error:', error);
       setError(error.response?.data?.message || 'Failed to fetch quizzes');
       return { success: false, error: error.response?.data?.message };
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchQuizById = async (id) => {
     try {
       setLoading(true);
-      const response = await quizAPI.getQuizById(id);
+      const response = await quizAPI.getQuiz(id);
       
       if (response.data.success) {
         dispatch({ type: actionTypes.SET_CURRENT_QUIZ, payload: response.data.data });
@@ -227,6 +229,12 @@ export const QuizProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getQuiz = async (id) => {
+    const result = await fetchQuizById(id);
+    if (result.success) return result.data;
+    throw new Error(result.error || 'Failed to get quiz');
   };
 
   const createQuiz = async (quizData) => {
@@ -269,6 +277,10 @@ export const QuizProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const updateQuizStatus = async (id, status) => {
+    return updateQuiz(id, { status });
   };
 
   const deleteQuiz = async (id) => {
@@ -384,14 +396,17 @@ export const QuizProvider = ({ children }) => {
   const value = {
     // State
     ...state,
+    isLoading: state.isLoading,
+    loading: state.isLoading,
     
     // Quiz actions
     fetchQuizzes,
     fetchQuizById,
+    getQuiz,
     createQuiz,
     updateQuiz,
+    updateQuizStatus,
     deleteQuiz,
-    generateQuizQuestions,
     
     // Submission actions
     fetchSubmissions,

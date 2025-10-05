@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card } from '../../components/common/Card';
-import { Button } from '../../components/common/Button';
-import { Input } from '../../components/common/Input';
-import { Loading } from '../../components/common/Loading';
-import { Modal } from '../../components/common/Modal';
-import { useAuth } from '../../contexts/AuthContext';
-import { useQuiz } from '../../contexts/QuizContext';
+import { Card, Button, Input, Loading, Modal } from '../../components/common';
+import { useAuth } from '../../context/AuthContext';
+import { useQuiz } from '../../context/QuizContext';
 import { toast } from 'react-hot-toast';
 import styles from './CreateQuizPage.module.css';
 
 const QUESTION_TYPES = {
-  MULTIPLE_CHOICE: 'multiple_choice',
-  TRUE_FALSE: 'true_false',
-  SHORT_ANSWER: 'short_answer',
+  MULTIPLE_CHOICE: 'multiple-choice',
+  TRUE_FALSE: 'true-false',
+  SHORT_ANSWER: 'short-answer',
   ESSAY: 'essay'
 };
 
@@ -36,11 +32,12 @@ export default function CreateQuizPage() {
     title: '',
     description: '',
     difficulty: DIFFICULTY_LEVELS.MEDIUM,
-    time_limit: 30,
-    attempts_allowed: 1,
-    show_results: true,
-    randomize_questions: false,
-    require_sequential: false,
+    settings: {
+      timeLimit: 30,
+      allowRetake: false,
+      showResults: true,
+      shuffleQuestions: false,
+    },
     status: 'draft',
     questions: []
   });
@@ -48,9 +45,9 @@ export default function CreateQuizPage() {
   // Question form state
   const [currentQuestion, setCurrentQuestion] = useState({
     type: QUESTION_TYPES.MULTIPLE_CHOICE,
-    question_text: '',
-    options: ['', '', '', ''],
-    correct_answer: '',
+    question: '',
+    options: [{ text: '' }, { text: '' }, { text: '' }, { text: '' }],
+    correctAnswer: '',
     explanation: '',
     points: 1
   });
@@ -74,12 +71,13 @@ export default function CreateQuizPage() {
       setFormData({
         title: quiz.title,
         description: quiz.description,
-        difficulty: quiz.difficulty,
-        time_limit: quiz.time_limit,
-        attempts_allowed: quiz.attempts_allowed,
-        show_results: quiz.show_results,
-        randomize_questions: quiz.randomize_questions,
-        require_sequential: quiz.require_sequential,
+        difficulty: quiz.metadata?.difficulty || quiz.difficulty,
+        settings: {
+          timeLimit: quiz.settings?.timeLimit ?? 30,
+          allowRetake: quiz.settings?.allowRetake ?? false,
+          showResults: quiz.settings?.showResults ?? true,
+          shuffleQuestions: quiz.settings?.shuffleQuestions ?? false,
+        },
         status: quiz.status,
         questions: quiz.questions || []
       });
@@ -106,30 +104,30 @@ export default function CreateQuizPage() {
   const handleOptionChange = (index, value) => {
     setCurrentQuestion(prev => ({
       ...prev,
-      options: prev.options.map((option, i) => i === index ? value : option)
+      options: prev.options.map((option, i) => i === index ? { ...option, text: value } : option)
     }));
   };
 
   const addQuestion = () => {
     // Validate question
-    if (!currentQuestion.question_text.trim()) {
+    if (!currentQuestion.question_text || !currentQuestion.question_text.trim()) {
       toast.error('Question text is required');
       return;
     }
 
     if (currentQuestion.type === QUESTION_TYPES.MULTIPLE_CHOICE) {
-      const validOptions = currentQuestion.options.filter(opt => opt.trim());
+      const validOptions = currentQuestion.options.filter(opt => opt.text && opt.text.trim());
       if (validOptions.length < 2) {
         toast.error('At least 2 options are required for multiple choice questions');
         return;
       }
-      if (!currentQuestion.correct_answer) {
+      if (!currentQuestion.correctAnswer) {
         toast.error('Please select the correct answer');
         return;
       }
     }
 
-    if (currentQuestion.type === QUESTION_TYPES.TRUE_FALSE && !currentQuestion.correct_answer) {
+    if (currentQuestion.type === QUESTION_TYPES.TRUE_FALSE && !currentQuestion.correctAnswer) {
       toast.error('Please select the correct answer');
       return;
     }
@@ -181,9 +179,9 @@ export default function CreateQuizPage() {
   const resetQuestionForm = () => {
     setCurrentQuestion({
       type: QUESTION_TYPES.MULTIPLE_CHOICE,
-      question_text: '',
-      options: ['', '', '', ''],
-      correct_answer: '',
+      question: '',
+      options: [{ text: '' }, { text: '' }, { text: '' }, { text: '' }],
+      correctAnswer: '',
       explanation: '',
       points: 1
     });
@@ -203,12 +201,8 @@ export default function CreateQuizPage() {
       toast.error('At least one question is required');
       return false;
     }
-    if (formData.time_limit < 1) {
+    if ((formData.settings?.timeLimit ?? 0) < 1) {
       toast.error('Time limit must be at least 1 minute');
-      return false;
-    }
-    if (formData.attempts_allowed < 1) {
-      toast.error('Attempts allowed must be at least 1');
       return false;
     }
     return true;
@@ -220,12 +214,22 @@ export default function CreateQuizPage() {
     setSaveStatus('saving');
     try {
       const quizData = {
-        ...formData,
+        title: formData.title,
+        description: formData.description,
+        subject: 'General',
         status,
+        metadata: { difficulty: formData.difficulty },
+        settings: formData.settings,
         questions: formData.questions.map((q, index) => ({
-          ...q,
-          order: index + 1
-        }))
+          type: q.type,
+          question: q.question_text || q.question || "",
+          options: q.type === QUESTION_TYPES.MULTIPLE_CHOICE ? q.options.map((opt) => ({ text: opt.text, isCorrect: opt.text === q.correctAnswer })) : undefined,
+          correctAnswer: q.type !== QUESTION_TYPES.MULTIPLE_CHOICE ? q.correctAnswer : undefined,
+          explanation: q.explanation || "",
+          points: q.points || 0,
+          difficulty: formData.difficulty,
+          order: index + 1,
+        })),
       };
 
       if (isEditing) {
@@ -329,8 +333,8 @@ export default function CreateQuizPage() {
             type="number"
             min="1"
             max="180"
-            value={formData.time_limit}
-            onChange={(e) => handleBasicInfoChange('time_limit', parseInt(e.target.value))}
+            value={formData.settings.timeLimit}
+            onChange={(e) => setFormData(prev => ({ ...prev, settings: { ...prev.settings, timeLimit: parseInt(e.target.value) } }))}
           />
         </div>
       </div>
@@ -382,17 +386,17 @@ export default function CreateQuizPage() {
               </div>
               
               <div className={styles.questionContent}>
-                <p className={styles.questionText}>{question.question_text}</p>
+                <p className={styles.questionText}>{question.question}</p>
                 
                 {question.type === QUESTION_TYPES.MULTIPLE_CHOICE && (
                   <div className={styles.questionOptions}>
-                    {question.options.filter(opt => opt.trim()).map((option, optIndex) => (
+                    {question.options.filter(opt => opt.text && opt.text.trim()).map((option, optIndex) => (
                       <div 
                         key={optIndex}
-                        className={`${styles.option} ${option === question.correct_answer ? styles.correct : ''}`}
+                        className={`${styles.option} ${option.text === question.correctAnswer ? styles.correct : ''}`}
                       >
-                        {String.fromCharCode(65 + optIndex)}. {option}
-                        {option === question.correct_answer && <span className={styles.correctMark}>✓</span>}
+                        {String.fromCharCode(65 + optIndex)}. {option.text}
+                        {option.text === question.correctAnswer && <span className={styles.correctMark}>✓</span>}
                       </div>
                     ))}
                   </div>
@@ -400,11 +404,11 @@ export default function CreateQuizPage() {
 
                 {question.type === QUESTION_TYPES.TRUE_FALSE && (
                   <div className={styles.trueFalseOptions}>
-                    <span className={question.correct_answer === 'true' ? styles.correct : ''}>
-                      True {question.correct_answer === 'true' && '✓'}
+                    <span className={question.correctAnswer === 'true' ? styles.correct : ''}>
+                      True {question.correctAnswer === 'true' && '✓'}
                     </span>
-                    <span className={question.correct_answer === 'false' ? styles.correct : ''}>
-                      False {question.correct_answer === 'false' && '✓'}
+                    <span className={question.correctAnswer === 'false' ? styles.correct : ''}>
+                      False {question.correctAnswer === 'false' && '✓'}
                     </span>
                   </div>
                 )}
@@ -552,7 +556,7 @@ export default function CreateQuizPage() {
             id="question_text"
             className={styles.textarea}
             placeholder="Enter your question..."
-            value={currentQuestion.question_text}
+            value={currentQuestion.question_text || ""}
             onChange={(e) => handleQuestionChange('question_text', e.target.value)}
             rows={3}
             required
@@ -567,16 +571,16 @@ export default function CreateQuizPage() {
                 <Input
                   type="text"
                   placeholder={`Option ${String.fromCharCode(65 + index)}`}
-                  value={option}
+                  value={option.text || ""}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
                 />
                 <label className={styles.correctOption}>
                   <input
                     type="radio"
                     name="correct_answer"
-                    value={option}
-                    checked={currentQuestion.correct_answer === option}
-                    onChange={(e) => handleQuestionChange('correct_answer', e.target.value)}
+                    value={option.text}
+                    checked={currentQuestion.correctAnswer === option.text}
+                    onChange={(e) => handleQuestionChange('correctAnswer', e.target.value)}
                   />
                   Correct
                 </label>
@@ -594,8 +598,8 @@ export default function CreateQuizPage() {
                   type="radio"
                   name="correct_answer"
                   value="true"
-                  checked={currentQuestion.correct_answer === 'true'}
-                  onChange={(e) => handleQuestionChange('correct_answer', e.target.value)}
+                  checked={currentQuestion.correctAnswer === 'true'}
+                  onChange={(e) => handleQuestionChange('correctAnswer', e.target.value)}
                 />
                 True
               </label>
@@ -604,8 +608,8 @@ export default function CreateQuizPage() {
                   type="radio"
                   name="correct_answer"
                   value="false"
-                  checked={currentQuestion.correct_answer === 'false'}
-                  onChange={(e) => handleQuestionChange('correct_answer', e.target.value)}
+                  checked={currentQuestion.correctAnswer === 'false'}
+                  onChange={(e) => handleQuestionChange('correctAnswer', e.target.value)}
                 />
                 False
               </label>
@@ -620,8 +624,8 @@ export default function CreateQuizPage() {
               id="sample_answer"
               className={styles.textarea}
               placeholder="Enter a sample answer..."
-              value={currentQuestion.correct_answer}
-              onChange={(e) => handleQuestionChange('correct_answer', e.target.value)}
+              value={currentQuestion.correctAnswer || ""}
+              onChange={(e) => handleQuestionChange('correctAnswer', e.target.value)}
               rows={3}
             />
           </div>
@@ -633,7 +637,7 @@ export default function CreateQuizPage() {
             id="explanation"
             className={styles.textarea}
             placeholder="Explain the correct answer..."
-            value={currentQuestion.explanation}
+            value={currentQuestion.explanation || ""}
             onChange={(e) => handleQuestionChange('explanation', e.target.value)}
             rows={2}
           />
@@ -730,18 +734,6 @@ export default function CreateQuizPage() {
       </div>
 
       {renderQuestionModal()}
-    </div>
-  );
-}om 'react';
-import { Card } from '../../components/common';
-
-const CreateQuizPage = () => {
-  return (
-    <div className="create-quiz-page">
-      <h1>Create Quiz</h1>
-      <Card>
-        <p>Quiz creation functionality will be implemented here.</p>
-      </Card>
     </div>
   );
 }

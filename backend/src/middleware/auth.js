@@ -4,7 +4,15 @@ const User = require('../models/User');
 // Authenticate user with JWT token
 const authenticate = async (req, res, next) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    // Extract and normalize token from Authorization header
+    let token = req.header('Authorization')?.replace('Bearer ', '');
+    if (typeof token === 'string') {
+      token = token.trim();
+      // Strip accidental surrounding quotes if present (e.g., "eyJ..." from JSON stringified storage)
+      if ((token.startsWith('"') && token.endsWith('"')) || (token.startsWith("'") && token.endsWith("'"))) {
+        token = token.slice(1, -1);
+      }
+    }
 
     if (!token) {
       return res.status(401).json({ 
@@ -68,7 +76,13 @@ const authorize = (...roles) => {
 // Optional authentication (for public endpoints that can work with or without auth)
 const optionalAuth = async (req, res, next) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    let token = req.header('Authorization')?.replace('Bearer ', '');
+    if (typeof token === 'string') {
+      token = token.trim();
+      if ((token.startsWith('"') && token.endsWith('"')) || (token.startsWith("'") && token.endsWith("'"))) {
+        token = token.slice(1, -1);
+      }
+    }
 
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
