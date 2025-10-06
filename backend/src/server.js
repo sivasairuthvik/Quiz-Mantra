@@ -104,6 +104,22 @@ app.use(passport.session());
 // Static files middleware
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+  const frontendDist = path.join(__dirname, '../../frontend/dist');
+  app.use(express.static(frontendDist));
+
+  // Fallback to index.html for SPA routes
+  app.get('*', (req, res) => {
+    // If request starts with /api or other server routes, pass through
+    if (req.path.startsWith('/api') || req.path.startsWith('/auth') || req.path.startsWith('/uploads')) {
+      return res.status(404).json({ success: false, message: 'Not found' });
+    }
+
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
