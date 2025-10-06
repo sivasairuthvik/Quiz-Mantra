@@ -108,8 +108,6 @@
 .navbar__dropdown-link:hover {
   color: #1A90B5;
 }
-  gap: 16px;
-}
 
 /* Notifications */
 .navbar__notifications {

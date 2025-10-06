@@ -8,110 +8,110 @@
   padding: 10px 16px;
   border-radius: 8px;
   font-size: 14px;
+}
 
-  /* Button base styles */
-  .button {
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid #E6E6E6;
-    background: #1B1B1B;
-    color: #FFFFFF;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s cubic-bezier(0.4,0,0.2,1);
-    outline: none;
-    font-family: inherit;
-  }
-  .button:hover {
-    background: #1A90B5;
-    color: #FFFFFF;
-  }
-  .button:active {
-    background: #156d8a;
-    transform: scale(0.96);
-  }
-  .button[disabled], .button.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  .button--primary {
-    background: #1A90B5;
-    color: #FFFFFF;
-    border: 1px solid #1A90B5;
-    box-shadow: 0 2px 8px rgba(26, 144, 181, 0.10);
-  }
-  .button--primary:hover {
-    background: #156d8a;
-  }
-  .button--secondary {
-    background: #000000;
-    color: #FFFFFF;
-    border: 1px solid #E6E6E6;
-  }
-  .button--secondary:hover {
-    background: #1B1B1B;
-  }
-  .button--accent {
-    background: #FFFFFF;
-    color: #1A90B5;
-    border: 1px solid #1A90B5;
-  }
-  .button--accent:hover {
-    background: #E6E6E6;
-  }
-  .button--fullWidth {
-    width: 100%;
-  }
-  .button--sm {
-    padding: 4px 8px;
-    font-size: 12px;
-  }
-  .button--md {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-  .button--lg {
-    padding: 12px 24px;
-    font-size: 16px;
-  }
-  .button--xl {
-    padding: 16px 32px;
-    font-size: 18px;
-  }
-  .button--icon {
-    margin-right: 8px;
-    font-size: 1.2em;
-    vertical-align: middle;
-  }
-  .button--loading {
-    pointer-events: none;
-    opacity: 0.7;
-  }
-  .button--shadow {
-    box-shadow: 0 2px 8px rgba(26, 144, 181, 0.10);
-  }
-  .button--rounded {
-    border-radius: 999px;
-  }
-  .button--outline {
-    background: transparent;
-    color: #1A90B5;
-    border: 1px solid #1A90B5;
-  }
-  .button--outline:hover {
-    background: #1A90B5;
-    color: #FFFFFF;
-  }
-  .button--muted {
-    background: #E6E6E6;
-    color: #1B1B1B;
-    border: 1px solid #E6E6E6;
-  }
-  .button--muted:hover {
-    background: #1B1B1B;
-    color: #FFFFFF;
-  }
+/* Button base styles for elements inside .btn */
+.btn .button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #E6E6E6;
+  background: #1B1B1B;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s cubic-bezier(0.4,0,0.2,1);
+  outline: none;
+  font-family: inherit;
+}
+.btn .button:hover {
+  background: #1A90B5;
+  color: #FFFFFF;
+}
+.btn .button:active {
+  background: #156d8a;
+  transform: scale(0.96);
+}
+.btn .button[disabled], .btn .button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn .button--primary {
+  background: #1A90B5;
+  color: #FFFFFF;
+  border: 1px solid #1A90B5;
+  box-shadow: 0 2px 8px rgba(26, 144, 181, 0.10);
+}
+.btn .button--primary:hover {
+  background: #156d8a;
+}
+.btn .button--secondary {
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid #E6E6E6;
+}
+.btn .button--secondary:hover {
+  background: #1B1B1B;
+}
+.btn .button--accent {
+  background: #FFFFFF;
+  color: #1A90B5;
+  border: 1px solid #1A90B5;
+}
+.btn .button--accent:hover {
+  background: #E6E6E6;
+}
+.btn .button--fullWidth {
+  width: 100%;
+}
+.btn .button--sm {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.btn .button--md {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+.btn .button--lg {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+.btn .button--xl {
+  padding: 16px 32px;
+  font-size: 18px;
+}
+.btn .button--icon {
+  margin-right: 8px;
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+.btn .button--loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.btn .button--shadow {
+  box-shadow: 0 2px 8px rgba(26, 144, 181, 0.10);
+}
+.btn .button--rounded {
+  border-radius: 999px;
+}
+.btn .button--outline {
+  background: transparent;
+  color: #1A90B5;
+  border: 1px solid #1A90B5;
+}
+.btn .button--outline:hover {
+  background: #1A90B5;
+  color: #FFFFFF;
+}
+.btn .button--muted {
+  background: #E6E6E6;
+  color: #1B1B1B;
+  border: 1px solid #E6E6E6;
+}
+.btn .button--muted:hover {
+  background: #1B1B1B;
+  color: #FFFFFF;
 }
 
 .btn--ghost:hover:not(:disabled) {

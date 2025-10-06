@@ -31,15 +31,7 @@
   background: #E6E6E6;
   color: #1B1B1B;
 }
-  border: 1px solid #333;
-  border-radius: 8px;
-  background: #23232a;
-  color: #f3f4f6;
-  transition: all 0.2s ease;
-  font-family: inherit;
-  font-size: 14px;
-  outline: none;
-}
+
 
 .input__field:focus {
   border-color: #667eea;
