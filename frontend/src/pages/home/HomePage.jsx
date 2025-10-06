@@ -31,7 +31,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="home">
+  <div className="home" style={{ overflowX: 'hidden', width: '100vw', maxWidth: '100%', boxSizing: 'border-box' }}>
   <Navbar />
       {/* Hero Section */}
       <header className="hero">
@@ -46,9 +46,10 @@ const HomePage = () => {
               Create, assign, and analyze quizzes effortlessly. Harness Gemini AI to transform
               study materials into high‑quality questions in seconds.
             </p>
-            <div className="hero__actions">
-              <Link to="/register"><Button size="lg" icon={"✨"}>Get started</Button></Link>
-              <Link to="/login"><Button size="lg" variant="secondary" icon={"▶"} iconPosition="right">Sign in</Button></Link>
+            <div className="hero__actions" style={{ width: '100%' }}>
+              <Link to="/register" style={{ display: 'block', width: '100%' }}>
+                <Button size="lg" icon={"✨"} fullWidth>Get started</Button>
+              </Link>
             </div>
             <ul className="hero__trust">
               <li>🔒 Secure</li>
@@ -169,16 +170,17 @@ const HomePage = () => {
           <p>Join educators and learners using AI to supercharge assessments.</p>
           <div className="cta__actions">
             <Link to="/register"><Button size="lg" icon={"🚀"}>Create free account</Button></Link>
-            <Link to="/login"><Button size="lg" variant="secondary">I already have an account</Button></Link>
+            <Link to="/login"><Button size="lg" style={{ background: '#FFFFFF', color: '#1A90B5', border: '1px solid #1A90B5', fontWeight: 600 }}>I already have an account</Button></Link>
           </div>
-          <form onSubmit={submitContact} className="contact-form" style={{ marginTop: 24 }}>
-            <div className="grid-2">
+          <form onSubmit={submitContact} className="contact-form" style={{ marginTop: 24, background: '#1B1B1B', borderRadius: 16, padding: 32, border: '1px solid #E6E6E6', boxShadow: '0 4px 24px rgba(26,144,181,0.12)', maxWidth: 480, marginLeft: 'auto', marginRight: 'auto', display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <input
                 type="text"
                 placeholder="Your name"
                 value={contact.name}
                 onChange={(e) => setContact({ ...contact, name: e.target.value })}
                 required
+                style={{ background: '#1B1B1B', color: '#FFFFFF', border: '1px solid #E6E6E6', borderRadius: 8, padding: '12px 16px', fontSize: 16, fontWeight: 500, outline: 'none', transition: 'border 0.2s', width: '100%' }}
               />
               <input
                 type="email"
@@ -186,17 +188,19 @@ const HomePage = () => {
                 value={contact.email}
                 onChange={(e) => setContact({ ...contact, email: e.target.value })}
                 required
+                style={{ background: '#1B1B1B', color: '#FFFFFF', border: '1px solid #E6E6E6', borderRadius: 8, padding: '12px 16px', fontSize: 16, fontWeight: 500, outline: 'none', transition: 'border 0.2s', width: '100%' }}
+              />
+              <textarea
+                placeholder="How can we help?"
+                rows={4}
+                value={contact.message}
+                onChange={(e) => setContact({ ...contact, message: e.target.value })}
+                required
+                style={{ background: '#1B1B1B', color: '#FFFFFF', border: '1px solid #E6E6E6', borderRadius: 8, padding: '12px 16px', fontSize: 16, fontWeight: 500, outline: 'none', resize: 'vertical', transition: 'border 0.2s', width: '100%' }}
               />
             </div>
-            <textarea
-              placeholder="How can we help?"
-              rows={4}
-              value={contact.message}
-              onChange={(e) => setContact({ ...contact, message: e.target.value })}
-              required
-            />
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
-              <Button type="submit" disabled={submitting}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+              <Button type="submit" disabled={submitting} style={{ background: '#1A90B5', color: '#FFFFFF', border: '1px solid #1A90B5', borderRadius: 8, fontWeight: 600, fontSize: 16, padding: '12px 32px', minWidth: 160 }}>
                 {submitting ? 'Sending…' : 'Send message'}
               </Button>
             </div>

@@ -6,37 +6,77 @@
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+  body {
+    background: #000000;
+    color: #FFFFFF;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    transition: background 0.2s, color 0.2s;
   }
-  to {
-    transform: rotate(360deg);
+  h1, h2, h3, h4, h5, h6 {
+    color: #1A90B5;
+    font-weight: 700;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  a {
+    color: #1A90B5;
+    text-decoration: none;
+    transition: color 0.2s;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+  a:hover {
+    color: #156d8a;
+  }
+  .app-container {
+    background: #000000;
+    min-height: 100vh;
+  }
+  .section {
+    background: #1B1B1B;
+    border-radius: 1.2rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 24px rgba(26, 144, 181, 0.12);
+  }
+  .divider {
+    height: 1px;
+    background: #E6E6E6;
+    margin: 2rem 0;
+  }
+  .text-muted {
+    color: #E6E6E6;
+  }
+  .text-accent {
+    color: #1A90B5;
+  }
+  .text-error {
+    color: #e53935;
+  }
+  .card {
+    background: #1B1B1B;
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 24px rgba(26, 144, 181, 0.12);
+    padding: 2rem 1.5rem;
+    border: 1px solid #E6E6E6;
+  }
+  .card--muted {
+    background: #E6E6E6;
+    color: #1B1B1B;
+  }
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #1A90B5 #1B1B1B;
+  }
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    background: #1B1B1B;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #1A90B5;
+    border-radius: 8px;
+  }
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #156d8a;
+  }

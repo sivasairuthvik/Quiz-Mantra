@@ -1,43 +1,44 @@
-/* Sidebar Styles */
 
 .sidebar {
+  background: #1B1B1B;
+  color: #FFFFFF;
+  border-right: 1px solid #E6E6E6;
+  width: 220px;
+  min-height: 100vh;
+  padding: 2rem 1rem;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 280px;
-  background: #23232a;
-  color: #f3f4f6;
-  transform: translateX(0);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+}
+.sidebar__logo {
+  color: #1A90B5;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+.sidebar__links {
   display: flex;
   flex-direction: column;
+  gap: 1.2rem;
 }
-
-.sidebar--collapsed {
-  width: 80px;
+.sidebar__link {
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
 }
-
-.sidebar--mobile-open {
-  transform: translateX(0);
+.sidebar__link:hover {
+  background: #1A90B5;
+  color: #FFFFFF;
 }
-
-/* Mobile overlay */
-.sidebar__overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+.sidebar__link--active {
+  background: #1A90B5;
+  color: #FFFFFF;
 }
-
-/* Mobile toggle button */
 .sidebar__mobile-toggle {
   position: fixed;
   top: 20px;

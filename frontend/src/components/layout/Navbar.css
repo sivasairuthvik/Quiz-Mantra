@@ -42,71 +42,72 @@
   width: 100%;
 }
 
-.navbar__search-input-wrapper {
-  position: relative;
+
+.navbar {
+  background: #1B1B1B;
+  color: #FFFFFF;
+  border-bottom: 1px solid #E6E6E6;
+  padding: 0.8rem 2rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-
-.navbar__search-icon {
-  position: absolute;
-  left: 12px;
-  color: #64748b;
-  font-size: 16px;
-  pointer-events: none;
-  z-index: 1;
+.navbar__logo {
+  color: #1A90B5;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
 }
-
-
-.navbar__search-input {
-  width: 100%;
-  padding: 10px 12px 10px 40px;
-  border: 1px solid #333;
+.navbar__links {
+  display: flex;
+  gap: 1.5rem;
+}
+.navbar__link {
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.navbar__link:hover {
+  color: #1A90B5;
+}
+.navbar__profile {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #FFFFFF;
+}
+.navbar__profile-name {
+  font-weight: 600;
+  color: #FFFFFF;
+}
+.navbar__dropdown {
+  background: #1B1B1B;
+  border: 1px solid #E6E6E6;
   border-radius: 8px;
-  font-size: 14px;
-  background: #23232a;
-  color: #f3f4f6;
-  transition: all 0.2s ease;
-  outline: none;
-}
-
-
-.navbar__search-input:focus {
-  border-color: #6366f1;
-  background: #18181b;
-  color: #fff;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
-}
-
-
-.navbar__search-input::placeholder {
-  color: #e0e0e0;
-}
-
-
-.navbar__search-clear {
+  box-shadow: 0 4px 24px rgba(26, 144, 181, 0.12);
+  padding: 0.7rem 1rem;
   position: absolute;
-  right: 8px;
-  background: none;
-  border: none;
-  color: #e0e0e0;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  top: 100%;
+  right: 0;
+  min-width: 180px;
+  z-index: 200;
 }
-
-
-.navbar__search-clear:hover {
-  background: #23232a;
-  color: #fff;
+.navbar__dropdown-link {
+  color: #FFFFFF;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  transition: color 0.2s;
 }
-
-/* Right Section */
-.navbar__right {
-  display: flex;
-  align-items: center;
+.navbar__dropdown-link:hover {
+  color: #1A90B5;
+}
   gap: 16px;
 }
 

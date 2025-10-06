@@ -132,34 +132,35 @@
   outline-offset: 2px;
 }
 
-.modal__content {
-  padding: 24px;
-  flex: 1;
-  overflow-y: auto;
-  line-height: 1.6;
-}
 
-.modal__content::-webkit-scrollbar {
-  width: 6px;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
 }
-
-.modal__content::-webkit-scrollbar-track {
-  background: #f1f5f9;
+.modal {
+  background: #1B1B1B;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(26, 144, 181, 0.12);
+  padding: 2rem 1.5rem;
+  border: 1px solid #E6E6E6;
+  color: #FFFFFF;
+  max-width: 420px;
+  margin: 2rem auto;
+  position: relative;
+  z-index: 1001;
 }
-
-.modal__content::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+.modal--accent {
+  border: 2px solid #1A90B5;
 }
-
-.modal__content::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+.modal--muted {
+  background: #E6E6E6;
+  color: #1B1B1B;
 }
-
-.modal__footer {
-  padding: 20px 24px;
-  border-top: 1px solid #e2e8f0;
-  flex-shrink: 0;
   background: #f8fafc;
   border-radius: 0 0 12px 12px;
 }

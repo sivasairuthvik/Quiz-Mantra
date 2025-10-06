@@ -1,27 +1,28 @@
 /* Card Styles */
 
 .card {
-  background: #23232a;
-  color: #f3f4f6;
+  background: #1B1B1B;
   border-radius: 12px;
-  border: 1px solid #333;
-  transition: all 0.2s ease;
-  display: block;
-  width: 100%;
-  text-align: left;
-  font-family: inherit;
-  font-size: inherit;
+  box-shadow: 0 4px 24px rgba(26, 144, 181, 0.12);
+  padding: 1.5rem;
+  border: 1px solid #E6E6E6;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s, border 0.2s;
 }
-
-/* Padding variants */
-.card--padding-none {
-  padding: 0;
+.card--shadow {
+  box-shadow: 0 4px 24px rgba(26, 144, 181, 0.12);
 }
-
-.card--padding-sm {
-  padding: 12px;
+.card--bordered {
+  border: 1px solid #E6E6E6;
 }
-
+.card--accent {
+  border: 2px solid #1A90B5;
+}
+.card--muted {
+  background: #E6E6E6;
+  color: #1B1B1B;
+}
 .card--padding-default {
   padding: 20px;
 }

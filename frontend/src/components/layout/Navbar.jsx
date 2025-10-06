@@ -41,6 +41,12 @@ const Navbar = () => {
           <img src="/vite.svg" alt="Logo" style={{ width: 32, height: 32, marginRight: 8 }} />
           <span style={{ color: '#f3f4f6', fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.5px' }}>Quiz Mantra</span>
         </div>
+        {/* Center: Navigation Links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+          <a href="#features" className="navbar__link" style={{ color: '#FFFFFF', fontWeight: 500, textDecoration: 'none', fontSize: '1rem' }}>Features</a>
+          <a href="#how" className="navbar__link" style={{ color: '#FFFFFF', fontWeight: 500, textDecoration: 'none', fontSize: '1rem' }}>How it works</a>
+          <a href="#contact" className="navbar__link" style={{ color: '#FFFFFF', fontWeight: 500, textDecoration: 'none', fontSize: '1rem' }}>Contact</a>
+        </div>
         {/* Right: User Profile or Login */}
         <div>
           {user ? (
